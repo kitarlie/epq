@@ -1,0 +1,195 @@
+Notes:
+-The separate file for version 1.0 was lost as a result of poor admin on my part.
+
+20/07/2021(v1.0):
+-Created Environment class attributes
+-Created Projectile class attributes
+-Added temporary input system for testing
+
+21/07/21(v1.1):
+-Added a global tickrate variable
+-Added a method for setting the horizontal and vertical components of the projectile's velocity
+-Added some test outputs to ensure that the inputs and calculations were correct
+-Tested program
+ -Changed 'int's to 'float's for the input functions to allow for decimal inputs
+ -Removed the parameters for the velocity function
+
+21/07/21(v1.2):
+-Combined the Environment and Projectile classes for ease of calculation
+-Added initial calculations for the vectors in a single method
+-Tested program
+ -Everything worked fine
+-Added method for updating vectors
+
+22/07/21(v1.3)
+-Inverted the sign of the drag force and acceleration due to gravity so as to provide a more accurate representation of resultant force
+-Added a loop which repeats the vector update method until the object reaches a displacement equal to its initial height
+-Added a __str__ method for the projectile which reads off its current horizontal and vertical displacement
+-In order to test the program, I temporarily removed the effects of drag in order to use SUVAT equations to check the accuracy of the simulation
+-Tested
+ -Vertical and horizontal displacement were equal, which shouldn't have happened, as I set the angle to 90 degrees so as to have no horizontal velocity
+ -Velocity was constant, which shouldn't have happened, as I set the vertical acceleration to 10
+-To find the error, I firstly made the program output the horizontal and vertical velocity after it was initially set
+ -This revealed that the horizontal and vertical velocities were initially equal to each other
+ -This was caused because I used sine to calculate both components of velocity, when I should have used cosine for the horizontal
+-After another test, there is still a very small horizontal component of velocity
+ -To test this, I created a small program, 'radian conversion test.py'
+ -This program revealed that the cosine of 90 degrees is taken as an extremely small number, not equal to zero, in Python
+ -However, the sine function gives a correct value of 0 when the appropriate angle is used (90-90=0)
+ -To fix the problem, instead of using cos(angle), I will use sin(90-angle) for greater consistency
+-The next problem is the lack of acceleration
+ -This was easily fixed, since I accidentally commented out the function for calculating the new vertical velocity
+-For proper testing, I have decreased the tickrate. After a few comparisons at different tickrates, the decrease has made a significant difference
+-After this, I decided to test with a horizontal component of velocity added in (i.e. angle of projection is not 90)
+-In order to calculate the time taken by the projectile, I added a variable that ticks up every time projectile.vectors() is run
+-From the simulation, the time taken to hit the ground was 2.289 seconds. From my calculations, it was around 2.288 seconds. This means it is accurate enough.
+
+Note - there was another v1.4, but I decided to delete it and its log because I spent an hour chasing a problem that didn't exist.
+
+26/07/21(v1.4)
+-Readded the calculations for drag force
+-Tested
+ -An OverflowError occurred when calculating the horizontal drag force
+ -On examination, it seems as though the projectile is accelerating forwards, which shouldn't happen for obvious reasons
+ -This may be due to the fact that I had used currentVerticalVelocity where I should've used currentHorizontalVelocity
+ -After some testing, it seems that the program works well enough. The object's terminal velocity is approximately what it should be.
+
+10/08/21
+-On this day, I decided to experiment with tkinter before I began working on V2.0 (for which I plan to add the menu interface) in a seperate file (tkinter test)
+-Importing tkinter as tk for simplicity, I intend to make a simple input system using Tk
+-Using a few lines of code, I was able to create a menu window, take inputs for my name and age, and click a 'submit' button which outputs the two values
+-This should be everything I need for the actual program
+
+11/08/21(V2.0)
+-Today, I decided to work on the real menu for the simulation
+-This will be in a different file, from which the inputs will be imported into the main code, to keep things organised
+-I started with a simple text popup menu to ensure that I was beginning things correctly
+-The plan is to have one frame with the inputs, and another with the buttons below it
+-After some work, I managed to create the menu, scrape inputs from it and add them to an array which can be sent to the main file, with 'clear' and 'submit' buttons
+
+N.B. After this point, instead of naming the main file after the current version, the main file will be named main.py and can be located in the folder
+labelled with the current version; this is because the menu script cannot call the main program if it has a '.' in the name
+
+20/08/21(v2.1)
+-Now, I decided to add a system to select presets
+-This would involve, firstly, building a set of preset variables
+-I decided to achieve this by creating a 2D list; in order for the program to track which preset is being used, a numeric value is required to reference the
+ current preset. However, I also needed a keyword for each one in order to display the name on the menu
+ -For the projectile presets, the environment values are replaced by dashes to prevent them from being updated during a preset change
+ -The inverse is true for the environmental presets
+
+10/09/21(v2.2)
+-Today, I attempted to finish the preset system
+-After a great deal of tribulation with the nextprojectile and prevprojectile commands, (I tried using partial functions to allow the use
+ of parameters, but I could not figure this out properly) I managed to finish the projectile preset button
+-Using this, I was able to copy and paste the code for the projectile buttons, change some variable/widget names and create a seperate section for the planet presets
+-Both buttons work as intended after some testing
+
+15/12/21
+-Today, I wanted to make inroads into v3. For this purpose, I decided to experiment with Matplotlib and Celluloid, as these are the tools I intend to use
+ for the animation
+-Firstly, I installed Matplotlib using a video tutorial (https://www.youtube.com/watch?v=QYLCXLQo1Sc)
+-Using this, I built a simple program that displays a sine wave graphically
+
+22/12/21
+-Today, I decided to experiment further with Matplotlib.
+-Firstly, I decided to make a simple program that displays a series of random numbers both on the x and y axes, making a y=x line.
+-Next, I made a y=x+2 line by adding 2 to every number in the list.
+-Then, I made a y=x^2 line, and added labels to each axis. I also removed the line as it did not fit the graph due to the random number generation.
+-This seemed like everything I would need for the graphing section of the project, but I still required knowledge of Celluloid for the animation.
+-After installing Celluloid and building a short program that would animate points on a y=x^2 graph, I got the following error: "'function' object has no attribute 'axes'"
+-To try and solve the problem, I copy-pasted the Celluloid example program (Minimal from https://pypi.org/project/celluloid/). Despite seeming almost
+ identical to mine, the example program worked while mine did not.
+-After some time, I realised that I called figure from plt as an attribute instead of a function. Once I fixed this, the program worked as intended.
+-This program represents all I should need from Numpy, Matplotlib and Celluloid to successfully finish my project.
+
+24/12/21 (v3.1)
+-Today, I moved onto v3.1, marking the beginning of the animation stage.
+-I started by adding a separate Python file, animation.py, dedicated to the animation stage.
+-Then, I added a 'tickInfo' attribute to the projectile class, so the information for each tick can be recorded.
+-The information for each tick will be added to a 'projectileInfo' list, creating a 2D list that can be used to plot the animation as well as the final graphs.
+-First, I created a small piece of code that adds the tick info for the projectile before it is released.
+-To test the system, I made the program print the tick info for every tick, and then the full projectileInfo list at the end, to compare the two.
+-N.B. for all tests from this point on I used the following inputs: Football and Earth presets, initial height and velocity = 3, angle of projection = 30.
+-Upon testing, I found out that the __str__ method for the projectile class cannot return a list. To fix this, I created a custom method that returns the list instead.
+-Once this was fixed, it revealed that the program worked as intended.
+
+26/12/21
+-Today, I decided to work on customising the FPS of the animation to ensure that it shows a realistic picture of the projectile.
+-For this, I would have to track down the animation function of Celluloid, which would lead me into the Matplotlib files.
+-The ArtistAnimation function did not accept an fps= argument even though it had *args and **kwargs, so I decided to experiment with them to figure out how they work.
+-To do this, I built a small program that either concatenates or splits a sentence depending on the inputs.
+-After some experimentation and further reading into the Animation function (https://matplotlib.org/stable/api/animation_api.html), I found out that I was using the wrong
+ argument name for the fps; instead, I needed an interval = statement. 
+-After doing this, I also edited the Matplotlib test program to clear the graph after each frame (to only have a point displayed instead of a line) and
+ colour the projectile black. This provided an example program much more similar to the intended project.
+
+27/12/21 (v3.2)
+-Today, proper work on v3.2 began.
+-I started by enabling main.py to open animation.py at the end of the calculations.
+-Then, in animation.py, I set up two lists that represent the horizontal and vertical displacements that update for each tick.
+-Upon testing, the program did not go as expected; it opened menu.py properly, but then opened it again and didn't output an animation.
+-I decided to replace the 'import' commands with 'exec(open("./filename").read())', which I found here: https://stackoverflow.com/questions/436198/what-is-an-alternative-to-execfile-in-python-3
+-This didn't work initally, but after removing and re-adding it, it opened animation.py as planned; however it had a couple of issues
+ -Firstly, it showed the full projectile path before showing the animation
+ -In addition, the gaps between each frame were longer than expected.
+-To solve the first problem, I tried replacing 'tick[1]' and 'tick[0]' in the animation loop with 'projectileInfo[currentTick][1]' and 
+ 'projectileInfo[currentTick][0]' respectively. For the second, I calculated the time interval with 1/tickRate instead of 1000/tickRate.
+-Neither of these solved the problem after testing again; the simulation happened too quickly, and it still displayed the full projectile arc at the start.
+-For the timing issue, I changed it to interval = 1000 * tickrate, and tried saving the animation as a gif to see if the first problem carried over.
+-The timing issue was solved, and there was no initial frame in the gif version.
+-To try and find why the initial frame was there, I decided to make the program output the projectileInfo list to see what's inside it. Nothing seemed amiss.
+-Instead, I decided to change how it's plotted; instead of resetting the list using x = ..., I would do x.clear() and x.append(), similar to the Matplotlib test file.
+-This also didn't fix it; in addition, a notable issue arose of the animation occurring twice instead of once.
+-I tried updating the list after plotting instead of before; this did not work.
+-Next, I tried compiling a list of all displacements before the animation loop began and using this isolated list instead. This did not work.
+-After this, I added a quit() statement at the end of main.py; this solved the issue of the animation playing twice.
+-The intial frame issue did not occur when I tested the program with preset displacement values instead of the projectileInfo values.
+-To test further, I pasted the code into the Matplotlib test file to see if the issue was replicated in a different virtual environment; it was not.
+-I decided to try creating a fresh version of the files under v3.3; this ended up with the same, so I decided to leave it alone.
+-I renamed animation.py to graphics.py so I could use it for the final graphs. In addition, I changed the system to import a function from graphics.py
+ instead of completing the entire program.
+
+07/01/2022 (v4.1)
+-Today, I started to work on v4.1; this marked the creation of the final graphs plotted by the program.
+-I began with creating a new file, afterparty.py, which will be spawned by the main program when the simulation is complete.
+-For ease of use, I also added a new input for the original menu (now called initialmenu.py) for the tick rate. Initially, this caused some compatibility
+ issues with the preset lists as well as sizing errors, but these were fixed trivially.
+-I started with afterparty.py after that; I created the menu and added the 'play simulation' button.
+-Then, I added a section that allows the user to select which values they want to plot; none of the buttons have their associated functions yet.
+
+13/01/2022
+-Today, I finished the graphing menu before adding the plot and animate functions.
+-I added a button to plot the graph when the axes have been selected, and a spacer between that and the play animation button.
+-Then, I added the button commands to change the currently selected axis value. However, while doing this, I had to split the selector generation
+ into two explicitly written code blocks so I could explicitly call each function. Despite that, the rest of the coding continued smoothly as it was
+ largely similar to the other menu program I wrote.
+
+31/01/2022 (v4.3)
+-Today, I decided to work on the button functions for the afterparty menu.
+-First, I changed a few variables names in afterparty.py to camel case to ensure consistency, and added a 'time' option to the variable options.
+-Then, I began work on the graph function in graphics.py. In order to handle the time variable, I added a loop that generates an in-simulation time for each tick.
+-Then, I added two more loops that fill the empty x and/or y lists, and wrote the code that plots the graph.
+-After this, I tested the program with the following parameters: Football, Earth presets, initial velocity = 30, initial height = 0 angle = 45, tickrate = 0.01
+-While doing this, I discovered that main.py does not actually call afterparty.py, which I quickly fixed and tested with the same parameters.
+-This time, I realised that I also had not added the button command to plot the graph. After doing this, I tested again with the same parameters. I plotted a graph of vertical displacement against time.
+-The graph that came out (Artefact Files\misc\Graph tests\Test 1) was empty. To investigate further, I made graphs() print x and y before plotting to
+ see whether the values had been added properly.
+-As expected, the lists were empty. This would most likely be an issue with the if statements, but just in case, I decided to print several
+ relevant pieces of data: projectileInfo, currentHorizontalAxis, currentVerticalAxis
+-Strangely, projectileInfo was also empty; to further investigate, I made main.py print projectileInfo after the list was compiled.
+-It was also empty within main.py, pointing to a problem with the method that compiles the tick info or the loop that adds each tick info to projectileInfo.
+ To investigate, I made printTickInfo print the tick info each time it runs. Nothing printed, so it seemed as if main.py was not calculating at all.
+-To double-check, I ran the program with different parameters; it worked exactly as expected (misc\Graph tests\Test 2), hinting at an issue with
+ the parameters.
+-Looking at main.py, I realised that the issue was with the loop I used to iterate the calculations; it only loops if the vertical displacement is greater
+ than the negative of its original height (i.e. height > 0), but this causes it to not loop if height is 0.
+-To fix this, I subtracted a very small value from the negative of original height to allow the program to work - one thing to note is that the program
+ will not work if the original height is negative, but that would imply that the projectile is being launched from below ground level which is
+ unlikely.
+-Afterwards, I tested again, to good results and a sensible-looking graph (misc\Graph tests\Test 3). I decided to add axis labels and change the graph
+ colour to black, and after this, the graphs() function was complete; therefore, the program itself is functionally complete.
+
+22/02/2022 (v4.3)
+-Changed football cross-sectional area to 0.038m^2 and basketball cross-sectional area to 0.048m^2
+-Edited loop in main.py so it loops when h=>0 rather than using a small value

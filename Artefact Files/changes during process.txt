@@ -1,0 +1,18 @@
+11/08/21:
+-Changed the naming scheme from the version name to 'main.py' as I required another file for the menu system and the 'vx.y' naming system
+ meant I could not call the main file from the menu.
+
+22/12/21:
+-Going to make the animation after the simulation instead of in real-time with the calculations, as this is the only way Celluloid works.
+
+24/12/21:
+-Decided to change the tickrate to something faster soon, as 2 every second produces a very small number of data points.
+
+27/12/21
+-Going to plot a line instead of points.
+-Changed animation.py into graphics.py and decided to use it for the final graphs too.
+
+22/02/22
+-Changed preset numbers as calculations were incorrect
+-Football area: 0.38m^2 -> 0.038m^2
+-Basketball area: 0.044m^2 -> 0.048m^2
